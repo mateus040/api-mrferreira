@@ -19,7 +19,7 @@ return new class extends Migration
             $table->double('height')->nullable(false);
             $table->double('depth')->nullable(false);
             $table->double('weight')->nullable(false);
-            $table->string('photo')->nullable(false);
+            $table->binary('photo')->nullable(false);
             $table->unsignedBigInteger('id_company')->nullable(false);
             $table->timestamps();
 

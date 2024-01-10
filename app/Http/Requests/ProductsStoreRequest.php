@@ -29,7 +29,7 @@ class ProductsStoreRequest extends FormRequest
                 'height' => 'required|numeric',
                 'depth' => 'required|numeric',
                 'weight' => 'required|numeric',
-                'photo' => 'required|string',
+                'photo' => 'required|file|mimes:jpeg,png,jpg,gif|max:2048',
                 'id_company' => 'required|exists:companys,id',
             ];
         } else {
@@ -40,7 +40,7 @@ class ProductsStoreRequest extends FormRequest
                 'height' => 'required|numeric',
                 'depth' => 'required|numeric',
                 'weight' => 'required|numeric',
-                'photo' => 'required|string',
+                'photo' => 'required|file|mimes:jpeg,png,jpg,gif|max:2048',
                 'id_company' => 'required|exists:companys,id',
             ];
         }

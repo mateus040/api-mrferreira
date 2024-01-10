@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Products;
 use App\Http\Requests\ProductsStoreRequest;
+use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
 {
@@ -28,6 +29,10 @@ class ProductsController extends Controller
         }
 
         try {
+
+            // Salvando a imagem
+            $photoPath = $request->file('photo')->store('photos', 'public');
+
             Products::create([
                 'name' => $request->name,
                 'description' => $request->description,
@@ -35,7 +40,7 @@ class ProductsController extends Controller
                 'height' => $request->height,
                 'depth' => $request->depth,
                 'weight' => $request->weight,
-                'photo' => $request->photo,
+                'photo' => $photoPath,
                 'id_company' => $request->id_company,
             ]);
 
@@ -75,13 +80,23 @@ class ProductsController extends Controller
                 ], 404);
             }
 
+            if ($request->hasFile('photo')) {
+                // Removendo a imagem antiga
+                if ($products->photo) {
+                    Storage::disk('public')->delete($products->photo);
+                }
+
+                // Salvando a nova imagem
+                $photoPath = $request->file('photo')->store('photos', 'public');
+                $products->photo = $photoPath;
+            }
+
             $products->name = $request->name;
             $products->description = $request->description;
-            $products->lenght = $request->lenght;
+            $products->length = $request->length;
             $products->height = $request->height;
             $products->depth = $request->depth;
             $products->weight = $request->weight;
-            $products->photo = $request->photo;
             $products->id_company = $request->id_company;
 
             $products->save();
