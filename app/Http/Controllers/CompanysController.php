@@ -64,11 +64,11 @@ class CompanysController extends Controller
             return response()->json([
                 'message' => 'Company Not Found.'
             ], 404);
-
-            return response()->json([
-                'companys' => $companys
-            ], 200);
         }
+
+        return response()->json([
+            'companys' => $companys
+        ], 200);
     }
 
     public function update(CompanysStoreRequest $request, $id)
