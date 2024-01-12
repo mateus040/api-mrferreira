@@ -21,44 +21,29 @@ class ProductsStoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        if (request()->isMethod('post')) {
-            return [
-                'name' => 'required|string',
-                'description' => 'required|string',
-                'length' => 'required|numeric',
-                'height' => 'required|numeric',
-                'depth' => 'required|numeric',
-                'weight' => 'required|numeric',
-                'photo' => 'required|file|mimes:jpeg,png,jpg,gif|max:2048',
-                'id_company' => 'required|exists:companys,id',
-            ];
-        } else {
-            return [
-                'name' => 'required|string',
-                'description' => 'required|string',
-                'length' => 'required|numeric',
-                'height' => 'required|numeric',
-                'depth' => 'required|numeric',
-                'weight' => 'required|numeric',
-                'photo' => 'required|file|mimes:jpeg,png,jpg,gif|max:2048',
-                'id_company' => 'required|exists:companys,id',
-            ];
-        }
+        return [
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'length' => 'required|numeric',
+            'height' => 'required|numeric',
+            'depth' => 'required|numeric',
+            'weight' => 'required|numeric',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'id_company' => 'required|exists:companys,id',
+        ];
     }
 
     public function messages()
     {
-        if (request()->isMethod('post')) {
-            return [
-                'name.required' => 'Name is required!',
-                'description.required' => 'Description is required!',
-                'length.required' => 'Length is required!',
-                'height.required' => 'Height is required!',
-                'depth.required' => 'Depth is required!',
-                'weight.required' => 'Weight is required!',
-                'photo.required' => 'Photo is required!',
-                'id_company.required' => 'The selected company does not exist.'
-            ];
-        }
+        return [
+            'name.required' => 'Name is required!',
+            'description.required' => 'Description is required!',
+            'length.required' => 'Length is required!',
+            'height.required' => 'Height is required!',
+            'depth.required' => 'Depth is required!',
+            'weight.required' => 'Weight is required!',
+            'photo.required' => 'Photo is required!',
+            'id_company.required' => 'The selected company does not exist.'
+        ];
     }
 }
