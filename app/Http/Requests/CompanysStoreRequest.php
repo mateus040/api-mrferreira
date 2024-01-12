@@ -21,52 +21,34 @@ class CompanysStoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        if (request()->isMethod('post')) {
-            return [
-                'name' => 'required|string',
-                'cnpj' => 'required|string',
-                'road' => 'required|string',
-                'neighborhood' => 'required|string',
-                'number' => 'required|integer',
-                'cep' => 'required|string',
-                'city' => 'required|string',
-                'state' => 'required|string',
-                'complement' => 'nullable|string',
-                'email' => 'required|string',
-                'phone' => 'nullable|string',
-                'cellphone' => 'nullable|string'
-            ];
-        } else {
-            return [
-                'name' => 'required|string',
-                'cnpj' => 'required|string',
-                'road' => 'required|string',
-                'neighborhood' => 'required|string',
-                'number' => 'required|integer',
-                'cep' => 'required|string',
-                'city' => 'required|string',
-                'state' => 'required|string',
-                'complement' => 'nullable|string',
-                'email' => 'required|string',
-                'phone' => 'nullable|string',
-                'cellphone' => 'nullable|string'
-            ];
-        }
+        return [
+            'name' => 'required|string',
+            'cnpj' => 'required|string',
+            'road' => 'required|string',
+            'neighborhood' => 'required|string',
+            'number' => 'required|integer',
+            'cep' => 'required|string',
+            'city' => 'required|string',
+            'state' => 'required|string',
+            'complement' => 'nullable|string',
+            'email' => 'required|string',
+            'phone' => 'nullable|string',
+            'cellphone' => 'nullable|string'
+        ];
     }
 
-    public function messages() {
-        if (request()->isMethod('post')) {
-            return [
-                'name.required' => 'Name is required!',
-                'cnpj.required' => 'CNPJ is required!',
-                'road.required' => 'Road is required!',
-                'neighborhood.required' => 'Neighborhood is required!',
-                'number.required' => 'Number is required!',
-                'cep.required' => 'CEP is required!',
-                'city.required' => 'City is required!',
-                'state.required' => 'State is required!',
-                'email.required' => 'Email is required!'
-            ];
-        }
+    public function messages()
+    {
+        return [
+            'name.required' => 'Name is required!',
+            'cnpj.required' => 'CNPJ is required!',
+            'road.required' => 'Road is required!',
+            'neighborhood.required' => 'Neighborhood is required!',
+            'number.required' => 'Number is required!',
+            'cep.required' => 'CEP is required!',
+            'city.required' => 'City is required!',
+            'state.required' => 'State is required!',
+            'email.required' => 'Email is required!'
+        ];
     }
 }
