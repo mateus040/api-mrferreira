@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\CompanysController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,18 +18,23 @@ use App\Http\Controllers\ProductsController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::get('companys', [CompanysController::class, 'index']);
+    Route::get('companys/{id}', [CompanysController::class, 'show']);
+    Route::post('companys/add', [CompanysController::class, 'store']);
+    Route::put('companys/update/{id}', [CompanysController::class, 'update']);
+    Route::delete('companys/delete/{id}', [CompanysController::class, 'destroy']);
+
+    Route::get('products', [ProductsController::class, 'index']);
+    Route::get('products/{id}', [ProductsController::class, 'show']);
+    Route::post('products/add', [ProductsController::class, 'store']);
+    Route::put('products/update/{id}', [ProductsController::class, 'update']);
+    Route::delete('products/delete/{id}', [ProductsController::class, 'destroy']);
 });
-
-Route::get('companys', [CompanysController::class, 'index']);
-Route::get('companys/{id}', [CompanysController::class, 'show']);
-Route::post('companys/add', [CompanysController::class, 'store']);
-Route::put('companys/update/{id}', [CompanysController::class, 'update']);
-Route::delete('companys/delete/{id}', [CompanysController::class, 'destroy']);
-
-Route::get('products', [ProductsController::class, 'index']);
-Route::get('products/{id}', [ProductsController::class, 'show']);
-Route::post('products/add', [ProductsController::class, 'store']);
-Route::put('products/update/{id}', [ProductsController::class, 'update']);
-Route::delete('products/delete/{id}', [ProductsController::class, 'destroy']);
