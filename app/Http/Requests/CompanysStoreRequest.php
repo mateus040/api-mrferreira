@@ -33,7 +33,8 @@ class CompanysStoreRequest extends FormRequest
             'complement' => 'nullable|string',
             'email' => 'required|string',
             'phone' => 'nullable|string',
-            'cellphone' => 'nullable|string'
+            'cellphone' => 'nullable|string',
+            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ];
     }
 
@@ -48,7 +49,8 @@ class CompanysStoreRequest extends FormRequest
             'cep.required' => 'CEP is required!',
             'city.required' => 'City is required!',
             'state.required' => 'State is required!',
-            'email.required' => 'Email is required!'
+            'email.required' => 'Email is required!',
+            'logo.required' => 'Logo is required!'
         ];
     }
 }

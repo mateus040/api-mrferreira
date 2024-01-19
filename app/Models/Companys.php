@@ -12,7 +12,7 @@ class Companys extends Model
     protected $fillable = [
         'name', 'cnpj', 'road', 'neighborhood',
         'number', 'cep', 'city', 'state', 'complement',
-        'email', 'phone', 'cellphone'
+        'email', 'phone', 'cellphone', 'logo'
     ];
 
     /**

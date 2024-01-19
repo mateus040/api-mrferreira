@@ -26,15 +26,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // Rotas protegidas
-    Route::get('companys', [CompanysController::class, 'index']);
+
     Route::get('companys/{id}', [CompanysController::class, 'show']);
     Route::post('companys/add', [CompanysController::class, 'store']);
     Route::put('companys/update/{id}', [CompanysController::class, 'update']);
     Route::delete('companys/delete/{id}', [CompanysController::class, 'destroy']);
 
-    Route::get('products', [ProductsController::class, 'index']);
     Route::get('products/{id}', [ProductsController::class, 'show']);
     Route::post('products/add', [ProductsController::class, 'store']);
     Route::put('products/update/{id}', [ProductsController::class, 'update']);
     Route::delete('products/delete/{id}', [ProductsController::class, 'destroy']);
 });
+
+Route::get('companys', [CompanysController::class, 'index']);
+Route::get('products', [ProductsController::class, 'index']);

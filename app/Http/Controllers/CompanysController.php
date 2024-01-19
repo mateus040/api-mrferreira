@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Companys;
 use App\Http\Requests\CompanysStoreRequest;
+use Illuminate\Support\Facades\Storage;
 
 class CompanysController extends Controller
 {
@@ -30,6 +31,9 @@ class CompanysController extends Controller
         }
 
         try {
+
+            $logoPath = $request->file('logo')->store('logos', 'public');  
+
             Companys::create([
                 'name' => $request->name,
                 'cnpj' => $request->cnpj,
@@ -43,6 +47,7 @@ class CompanysController extends Controller
                 'email' => $request->email,
                 'phone' => $request->phone ?? null,
                 'cellphone' => $request->cellphone ?? null,
+                'logo' => $logoPath,
             ]);
 
             // Return Json Response
@@ -80,6 +85,15 @@ class CompanysController extends Controller
                 return response()->json([
                     'message' => 'Company Not Found.'
                 ], 404);
+            }
+
+            if ($request->hasFile('logo')) {
+                if ($companys->logo) {
+                    Storage::disk('public')->delete($companys->logo);
+                }
+
+                $logoPath = $request->file('logo')->store('logos', 'public');
+                $companys->logo = $logoPath;
             }
 
             $companys->name = $request->name;
