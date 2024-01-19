@@ -6,21 +6,19 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Sanctum\PersonalAccessToken;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:4',
-        ], [
-            'email.unique' => 'Este e-mail já está em uso.',
-        ]);
-
         try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|unique:users|max:255',
+                'password' => 'required|string|min:8',
+            ]);
+    
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -28,49 +26,69 @@ class AuthController extends Controller
             ]);
     
             return response()->json([
-                'message' => 'User registered successfully!'
-            ], 201);
+                'message' => 'Usuário cadastrado com sucesso!', 'user' => $user
+            ]);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Failed to register user'
+                'message' => 'Ocorreu um erro durante o registro...',
+                'error' => $e->getMessage()
             ], 500);
         }
+        
     }
 
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        try {
+            $request->validate([
+                'email' => 'required|string|email',
+                'password' => 'required|string',
+            ]);
 
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            $user = Auth::user();
+            if (!Auth::attempt($request->only('email', 'password'))) {
+                throw ValidationException::withMessages([
+                    'email' => ['Credenciais inválidas!'],
+                ])->status(401);
+            }
 
-            $user->tokens->each(function (PersonalAccessToken $token) {
-                $token->delete();
-            });
+            $user = $request->user();
 
-            $token = $user->createToken('token_name');
-
-            return response(['token' => $token->plainTextToken], 200);
+            return response()->json([
+                'token' => $user->createToken('token-name')->plainTextToken
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao realizar o login...',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        return response()->json([
-            'message' => 'Invalid credentials'
-        ], 401);
     }
 
     public function logout(Request $request)
     {
-        $request->user()->tokens->each(function (PersonalAccessToken $token) {
-            $token->delete();
-        });
+        try {
+            $request->user()->tokens()->delete();
 
-        Auth::logout();
+            return response()->json([
+                'message' => 'Deslogado com sucesso!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao deslogar...',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 
-        return response()->json([
-            'message' => 'User logged out successfully'
-        ], 200);
+    public function getUser(Request $request)
+    {
+        try {
+            return $request->user();
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao buscar os dados do usuário...',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

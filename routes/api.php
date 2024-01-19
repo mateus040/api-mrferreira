@@ -18,14 +18,14 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
+    Route::get('/user', [AuthController::class, 'getUser']);
+    Route::post('/logout', [AuthController::class, 'logout']);
 
+    // Rotas protegidas
     Route::get('companys', [CompanysController::class, 'index']);
     Route::get('companys/{id}', [CompanysController::class, 'show']);
     Route::post('companys/add', [CompanysController::class, 'store']);
