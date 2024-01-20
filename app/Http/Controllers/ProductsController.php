@@ -69,6 +69,15 @@ class ProductsController extends Controller
         ], 200);
     }
 
+    public function productsByCompany($id)
+    {
+        $products = Products::where('id_company', $id)->get();
+
+        return response()->json([
+            'results' => $products,
+        ], 200);
+    }
+
     public function update(ProductsStoreRequest $request, $id)
     {
         try {
